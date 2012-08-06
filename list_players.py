@@ -17,7 +17,7 @@ def start(self):
                 initial_names = []
 
             while 1:
-                time.sleep(20)
+                time.sleep(30)
                 stream = urllib2.urlopen(url).read().decode()
                 
                 names =[]

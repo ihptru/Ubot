@@ -6,6 +6,7 @@ import multiprocessing
 
 import config
 import list_players
+import privmsg
 
 class IRC_Bot:
 
@@ -14,6 +15,7 @@ class IRC_Bot:
         self.irc_port = config.port
         self.irc_nick = config.nick
         self.channels = config.channels
+        self.command = ""
         
         self.irc_sock = socket.socket ( socket.AF_INET, socket.SOCK_STREAM )
         
@@ -67,6 +69,9 @@ class IRC_Bot:
             for recv in data:
                 if recv.find ( "PING" ) != -1:
                     self.irc_sock.send ( ("PONG "+ recv.split() [ 1 ] + "\r\n").encode() )
+
+                if recv.find ( " PRIVMSG " ) != -1:
+                    privmsg.parse(self, recv)
 
                 if recv.find ( " 433 * "+self.irc_nick+" " ) != -1:
                     print(("[%s] Nick is already in use!!!") % (self.irc_host))
